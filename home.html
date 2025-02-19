@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hệ thống quản lý khách sạn</title>
+  <style>
+    /* Reset và cấu hình cơ bản */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background-color: #35424a;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+    nav {
+      background-color: #e8491d;
+      padding: 15px;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      display: flex;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #333;
+      min-height: calc(100vh - 100px);
+      padding: 20px;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar ul li {
+      margin-bottom: 20px;
+    }
+    .sidebar ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+    .section {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    input, button, select {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+    }
+    button {
+      cursor: pointer;
+      background-color: #e8491d;
+      color: #fff;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hệ thống quản lý khách sạn</h1>
+  </header>
+  <nav>
+    <a href="#" onclick="showSection('dashboard')">Dashboard</a>
+    <a href="#" onclick="showSection('rooms')">Phòng</a>
+    <a href="#" onclick="showSection('bookings')">Đặt phòng</a>
+    <a href="#" onclick="showSection('customers')">Khách hàng</a>
+  </nav>
+  <div class="container">
+    <div class="sidebar">
+      <ul>
+        <li><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
+        <li><a href="#" onclick="showSection('rooms')">Quản lý phòng</a></li>
+        <li><a href="#" onclick="showSection('bookings')">Quản lý đặt phòng</a></li>
+        <li><a href="#" onclick="showSection('customers')">Quản lý khách hàng</a></li>
+      </ul>
+    </div>
+    <div class="main-content">
+      <!-- Dashboard -->
+      <div id="dashboard" class="section active">
+        <h2>Dashboard</h2>
+        <p>Chào mừng bạn đến với hệ thống quản lý khách sạn.</p>
+      </div>
+      <!-- Quản lý phòng -->
+      <div id="rooms" class="section">
+        <h2>Quản lý phòng</h2>
+        <p>Danh sách phòng khách sạn:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Số phòng</th>
+              <th>Loại phòng</th>
+              <th>Tình trạng</th>
+            </tr>
+          </thead>
+          <tbody id="roomsTable">
+            <!-- Các hàng phòng sẽ được chèn vào đây bằng JS -->
+          </tbody>
+        </table>
+      </div>
+      <!-- Quản lý đặt phòng -->
+      <div id="bookings" class="section">
+        <h2>Quản lý đặt phòng</h2>
+        <form id="bookingForm">
+          <div class="form-group">
+            <label for="customerName">Tên khách hàng:</label>
+            <input type="text" id="customerName" placeholder="Nhập tên khách hàng" required>
+          </div>
+          <div class="form-group">
+            <label for="roomNumber">Số phòng:</label>
+            <input type="number" id="roomNumber" placeholder="Nhập số phòng" required>
+          </div>
+          <div class="form-group">
+            <label for="checkIn">Ngày nhận phòng:</label>
+            <input type="date" id="checkIn" required>
+          </div>
+          <div class="form-group">
+            <label for="checkOut">Ngày trả phòng:</label>
+            <input type="date" id="checkOut" required>
+          </div>
+          <button type="submit">Đặt phòng</button>
+        </form>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tên khách hàng</th>
+              <th>Số phòng</th>
+              <th>Nhận phòng</th>
+              <th>Trả phòng</th>
+            </tr>
+          </thead>
+          <tbody id="bookingTable">
+            <!-- Các đặt phòng sẽ được chèn vào đây bằng JS -->
+          </tbody>
+        </table>
+      </div>
+      <!-- Quản lý khách hàng -->
+      <div id="customers" class="section">
+        <h2>Quản lý khách hàng</h2>
+        <p>Danh sách khách hàng:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tên khách hàng</th>
+              <th>Số điện thoại</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody id="customerTable">
+            <!-- Các khách hàng sẽ được chèn vào đây bằng JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Hàm chuyển đổi giữa các section
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => section.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    // Dữ liệu mẫu cho phòng
+    const rooms = [
+      { id: 1, number: '101', type: 'Single', status: 'Available' },
+      { id: 2, number: '102', type: 'Double', status: 'Occupied' },
+      { id: 3, number: '103', type: 'Suite', status: 'Available' }
+    ];
+
+    function renderRooms() {
+      const roomsTable = document.getElementById('roomsTable');
+      roomsTable.innerHTML = '';
+      rooms.forEach(room => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${room.id}</td>
+                        <td>${room.number}</td>
+                        <td>${room.type}</td>
+                        <td>${room.status}</td>`;
+        roomsTable.appendChild(tr);
+      });
+    }
+    renderRooms();
+
+    // Xử lý đặt phòng
+    let bookings = [];
+    let bookingId = 1;
+
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const customerName = document.getElementById('customerName').value;
+      const roomNumber = document.getElementById('roomNumber').value;
+      const checkIn = document.getElementById('checkIn').value;
+      const checkOut = document.getElementById('checkOut').value;
+
+      const newBooking = {
+        id: bookingId++,
+        customerName,
+        roomNumber,
+        checkIn,
+        checkOut
+      };
+
+      bookings.push(newBooking);
+      renderBookings();
+      this.reset();
+    });
+
+    function renderBookings() {
+      const bookingTable = document.getElementById('bookingTable');
+      bookingTable.innerHTML = '';
+      bookings.forEach(booking => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${booking.id}</td>
+                        <td>${booking.customerName}</td>
+                        <td>${booking.roomNumber}</td>
+                        <td>${booking.checkIn}</td>
+                        <td>${booking.checkOut}</td>`;
+        bookingTable.appendChild(tr);
+      });
+    }
+
+    // Dữ liệu mẫu cho khách hàng
+    const customers = [
+      { id: 1, name: 'Nguyễn Văn A', phone: '0123456789', email: 'a@example.com' },
+      { id: 2, name: 'Trần Thị B', phone: '0987654321', email: 'b@example.com' }
+    ];
+
+    function renderCustomers() {
+      const customerTable = document.getElementById('customerTable');
+      customerTable.innerHTML = '';
+      customers.forEach(customer => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${customer.id}</td>
+                        <td>${customer.name}</td>
+                        <td>${customer.phone}</td>
+                        <td>${customer.email}</td>`;
+        customerTable.appendChild(tr);
+      });
+    }
+    renderCustomers();
+  </script>
+</body>
+</html>
